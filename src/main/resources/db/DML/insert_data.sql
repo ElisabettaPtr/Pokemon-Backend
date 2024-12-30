@@ -388,3 +388,26 @@ INSERT INTO pokemon ("national_number","gen","english_name","primary_type","seco
 INSERT INTO pokemon ("national_number","gen","english_name","primary_type","secondary_type","classification","percent_male","percent_female","height_m","weight_kg","capture_rate","hp","attack","defense","speed","abilities_0","abilities_1","abilities_special","is_sublegendary","is_legendary","is_mythical","evochain_0","evochain_2","evochain_4","mega_evolution","description") VALUES (384,'III','Rayquaza','Drago','Volante','Pokémon Stratosfera',NULL,NULL,7.0,206.5,45,105,150,90,95,'Riparo',NULL,NULL,0,1,0,'Rayquaza',NULL,NULL,'Mega Rayquaza','Si dice che abbia centinaia di milioni di anni. Secondo la leggenda, mise fine alla lotta tra Groudon e Kyogre.');
 INSERT INTO pokemon ("national_number","gen","english_name","primary_type","secondary_type","classification","percent_male","percent_female","height_m","weight_kg","capture_rate","hp","attack","defense","speed","abilities_0","abilities_1","abilities_special","is_sublegendary","is_legendary","is_mythical","evochain_0","evochain_2","evochain_4","mega_evolution","description") VALUES (385,'III','Jirachi','Acciaio','Psico','Pokémon Desiderio',NULL,NULL,0.3,1.1,3,100,100,100,100,'Leggiadro',NULL,NULL,0,0,1,'Jirachi',NULL,NULL,NULL,'La leggenda racconta che Jirachi realizza ogni desiderio scritto su bigliettini che trova attaccati alla propria testa, quando si sveglia. In caso di pericolo, lotta senza mai svegliarsi.');
 INSERT INTO pokemon ("national_number","gen","english_name","primary_type","secondary_type","classification","percent_male","percent_female","height_m","weight_kg","capture_rate","hp","attack","defense","speed","abilities_0","abilities_1","abilities_special","is_sublegendary","is_legendary","is_mythical","evochain_0","evochain_2","evochain_4","mega_evolution","description") VALUES (386,'III','Deoxys','Psico',NULL,'Pokémon DNA',NULL,NULL,1.7,60.8,3,50,150,50,150,'Pressione',NULL,NULL,0,0,1,'Deoxys',NULL,NULL,NULL,'Il DNA di un virus spaziale ha subito un’improvvisa mutazione, in seguito all’esposizione a un raggio laser. Questo ha dato vita a Deoxys. Pare che l’organo cristallino sul suo petto costituisca il cervello.');
+
+INSERT INTO users (username, email, password_hash, first_name, last_name, date_of_birth)
+VALUES
+('trainer1', 'trainer1@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'John', 'Doe', '1985-01-15'),
+('trainer2', 'trainer2@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Michael', 'Smith', '1990-04-20'),
+('trainer3', 'trainer3@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'James', 'Johnson', '1988-07-12'),
+('trainer4', 'trainer4@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Mary', 'Williams', '1992-11-05'),
+('trainer5', 'trainer5@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Patricia', 'Brown', '1995-06-25'),
+('trainer6', 'trainer6@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Robert', 'Jones', '1991-09-14'),
+('trainer7', 'trainer7@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'David', 'Garcia', '1987-03-30'),
+('trainer8', 'trainer8@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Jennifer', 'Martinez', '1994-08-22'),
+('trainer9', 'trainer9@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'William', 'Hernandez', '1989-02-18'),
+('trainer10', 'trainer10@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Elizabeth', 'Lopez', '1993-12-11'),
+('trainer11', 'trainer11@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Joseph', 'Wilson', '1990-05-01'),
+('trainer12', 'trainer12@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Susan', 'Moore', '1996-10-13'),
+('trainer13', 'trainer13@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Charles', 'Taylor', '1986-07-07'),
+('trainer14', 'trainer14@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Sarah', 'Anderson', '1992-04-29'),
+('trainer15', 'trainer15@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Thomas', 'Thomas', '1994-01-20'),
+('trainer16', 'trainer16@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Christopher', 'Jackson', '1989-09-03'),
+('trainer17', 'trainer17@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Angela', 'White', '1991-11-09'),
+('trainer18', 'trainer18@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Daniel', 'Harris', '1988-12-17'),
+('trainer19', 'trainer19@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'Nancy', 'Clark', '1995-02-14'),
+('trainer20', 'trainer20@example.com', '$2a$10$je2hxU5YmQJSQgnFVpdX9uqbmL6RMDjDwTtv7tM2iCtBLpEm/qB5C', 'George', 'Lewis', '1993-05-30');
