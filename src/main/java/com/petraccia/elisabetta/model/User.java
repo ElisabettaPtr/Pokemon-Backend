@@ -1,5 +1,6 @@
 package com.petraccia.elisabetta.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,9 @@ public class User {
     private LocalDate dateOfBirth;
     private String username;
     private String email;
-    private String passwordHash;
+    private String password;
     private Boolean isActive;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSS")
     private LocalDateTime createdAt;
 
     public User(int idUser, String firstName, String lastName, LocalDate dateOfBirth, String username, String email, Boolean isActive) {

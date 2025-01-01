@@ -67,29 +67,60 @@ public class UserDAO {
         return null;
     }
 
-    public boolean createUser(User user) {
-        String createUserSQL = "INSERT INTO users (first_name, last_name, date_of_birth, username, email, password_hash) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+    public User getUserByUsername(String username) {
+        String getUserByUsernameSQL = "SELECT * FROM users WHERE username = ?";
+        try {
+            PreparedStatement psUserByUsername = connection.prepareStatement(getUserByUsernameSQL);
+            psUserByUsername.setString(1, username);
+            ResultSet rs = psUserByUsername.executeQuery();
+
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("id_user"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getDate("date_of_birth").toLocalDate(),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getBoolean("is_active"),
+                        rs.getTimestamp("created_at").toLocalDateTime()
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while retrieving user from the database.", e);
+        }
+        return null;
+    }
+
+    public User createUser(User user) {
+        String createUserSQL = "INSERT INTO users (first_name, last_name, date_of_birth, username, email, password) " +
+                "VALUES (?, ?, ?, ?, ?, ?) RETURNING id_user";
 
         try (PreparedStatement psCreateUser = connection.prepareStatement(createUserSQL)) {
-            String hashedPassword = BCrypt.hashpw(user.getPasswordHash(), BCrypt.gensalt());
-
+            // Non hashare la password, salva direttamente in chiaro
             psCreateUser.setString(1, user.getFirstName());
             psCreateUser.setString(2, user.getLastName());
             psCreateUser.setDate(3, java.sql.Date.valueOf(user.getDateOfBirth()));
             psCreateUser.setString(4, user.getUsername());
             psCreateUser.setString(5, user.getEmail());
-            psCreateUser.setString(6, hashedPassword);
+            psCreateUser.setString(6, user.getPassword()); // Salva la password in chiaro nel DB
 
-            int affectedRows = psCreateUser.executeUpdate();
+            try (ResultSet rs = psCreateUser.executeQuery()) {
+                if (rs.next()) {
+                    user.setIdUser(rs.getInt("id_user")); // Imposta l'ID generato nell'oggetto User
+                } else {
+                    throw new RuntimeException("User creation failed, no rows affected.");
+                }
+            }
 
-            return affectedRows > 0;
+            return user;
         } catch (SQLException e) {
             throw new RuntimeException("Error while creating user in the database.", e);
         }
     }
 
-    public boolean deleteUser(int idUser) {
+    public boolean deleteUserById(int idUser) {
         String deleteUserSQL = "DELETE FROM users WHERE id_user = ?";
 
         try (PreparedStatement psDeleteUser = connection.prepareStatement(deleteUserSQL)) {

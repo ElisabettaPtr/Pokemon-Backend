@@ -1,5 +1,6 @@
 package com.petraccia.elisabetta.controller;
 
+import com.petraccia.elisabetta.middleware.AuthMiddleware;
 import com.petraccia.elisabetta.model.Pokemon;
 import com.petraccia.elisabetta.service.PokemonService;
 import io.javalin.Javalin;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class PokemonController {
     private PokemonService pokemonService = new PokemonService();
+    AuthMiddleware authMiddleware = new AuthMiddleware();
     private String apiVersionV1 = "/api/v1";
 
     public void registerRoutes(Javalin app) {
