@@ -2,6 +2,7 @@ package com.petraccia.elisabetta.service;
 
 import com.petraccia.elisabetta.dao.UserDAO;
 import com.petraccia.elisabetta.model.User;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
@@ -15,8 +16,9 @@ import java.util.List;
 public class UserService {
     private final UserDAO userDAO = new UserDAO();
 
-    private final String JWT_SECRET = "thisisaverysecureandlongsecretkey32char"; // Modifica con una chiave segreta più sicura
+    Dotenv dotenv = Dotenv.load();
 
+    private final String JWT_SECRET = dotenv.get("JWT_SECRET");
 
     public String login(String username, String password) {
         // Recupera l'utente dal DB per username

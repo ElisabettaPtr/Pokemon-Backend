@@ -6,6 +6,8 @@ Create an empty database with PostgreSQL
 
 In the file, create variables "URL_DB", "USER_DB" and "PWD_DB", whose values are your database url, username and password (don't use quotes or commas!!! just the name of the variable = its value)
 
+In .env, also define variable JWT_SECRET
+
 Execute code
 
 If any error occurs, consider realoding the project: Right-click on pom.xml>Maven>Reload project

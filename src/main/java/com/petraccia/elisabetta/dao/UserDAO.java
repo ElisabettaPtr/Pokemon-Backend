@@ -7,8 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 public class UserDAO {
     private Connection connection = DatabaseConnection.getInstance().getConnection();
 

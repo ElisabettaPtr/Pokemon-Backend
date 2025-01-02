@@ -16,12 +16,22 @@ public class PokemonController {
 
         // getAllPokemon --- "http://localhost:8000/api/v1/pokemon" ---
         app.get(apiVersionV1 + "/pokemon", ctx -> {
+            authMiddleware.handle(ctx);
+            if (ctx.status().getCode() == 401) {
+                return;
+            }
+
             List<Pokemon> pokemon = pokemonService.getAllPokemon();
             ctx.json(pokemon);
         });
 
         // getPokemonByNationalNumber --- "http://localhost:8000/api/v1/pokemon/national-number" + nationalNumber ---
         app.get(apiVersionV1 + "/pokemon/national-number/{nationalNumber}", ctx -> {
+            authMiddleware.handle(ctx);
+            if (ctx.status().getCode() == 401) {
+                return;
+            }
+
             String pokemonNationalNumber = ctx.pathParam("nationalNumber");
             Pokemon pokemon = pokemonService.getPokemonByNationalNumber(Integer.parseInt(pokemonNationalNumber));
             ctx.json(pokemon);
@@ -29,6 +39,11 @@ public class PokemonController {
 
         // getPokemonByEnglishName --- "http://localhost:8000/api/v1/pokemon/english-name" + englishName ---
         app.get(apiVersionV1 + "/pokemon/english-name/{englishName}", ctx -> {
+            authMiddleware.handle(ctx);
+            if (ctx.status().getCode() == 401) {
+                return;
+            }
+
             String pokemonEnglishName = ctx.pathParam("englishName");
             Pokemon pokemon = pokemonService.getPokemonByEnglishName(pokemonEnglishName);
             ctx.json(pokemon);
@@ -36,6 +51,11 @@ public class PokemonController {
 
         // getAllPokemonByType --- "http://localhost:8000/api/v1/pokemon/type" + type ---
         app.get(apiVersionV1 + "/pokemon/type/{type}", ctx -> {
+            authMiddleware.handle(ctx);
+            if (ctx.status().getCode() == 401) {
+                return;
+            }
+
             String pokemonType = ctx.pathParam("type");
             List<Pokemon> pokemon = pokemonService.getAllPokemonByType(pokemonType);
             ctx.json(pokemon);

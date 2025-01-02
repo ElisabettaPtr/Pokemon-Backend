@@ -1,8 +1,8 @@
 package com.petraccia.elisabetta;
 
+import com.petraccia.elisabetta.controller.PokedexController;
 import com.petraccia.elisabetta.controller.PokemonController;
 import com.petraccia.elisabetta.controller.UserController;
-import com.petraccia.elisabetta.middleware.AuthMiddleware;
 import io.javalin.Javalin;
 
 public class Main {
@@ -20,6 +20,9 @@ public class Main {
 
         UserController userController = new UserController();
         userController.registerRoutes(app);
+
+        PokedexController pokedexController = new PokedexController();
+        pokedexController.registerRoutes(app);
 
         System.out.println("Server is running on port 8000");
     }
