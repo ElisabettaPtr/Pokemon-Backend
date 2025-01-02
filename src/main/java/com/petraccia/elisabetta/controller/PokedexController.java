@@ -29,11 +29,11 @@ public class PokedexController {
                 Pokedex pokedexCreated = pokedexService.addToPokedex(pokedex2create);
                 ctx.status(HttpStatus.CREATED).json(pokedexCreated);
             } catch (RuntimeException e) {
-                // Controlla se l'errore riguarda l'esistenza del record
-                if (e.getMessage().contains("already exists")) {
+                if (e.getMessage().contains("already in your Wishlist")) {
+                    ctx.status(HttpStatus.BAD_REQUEST).result("This Pokémon is already in your Wishlist.");
+                } else if (e.getMessage().contains("already exists")) {
                     ctx.status(HttpStatus.BAD_REQUEST).result("Pokedex entry already exists for this user and national number.");
                 } else {
-                    // Gestione generica degli errori
                     ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).result("Failed to add Pokedex entry.");
                 }
             }
@@ -60,8 +60,8 @@ public class PokedexController {
             ctx.json(pokedexWithDetails);
         });
 
-        // deleteFromPokedex --- "http://localhost:8000/api/v1/pokedex" + id ---
-        app.delete(apiVersionV1 + "/pokedex/{id}", ctx -> {
+        // deleteFromPokedex --- "http://localhost:8000/api/v1/pokedex/delete/" + id ---
+        app.delete(apiVersionV1 + "/pokedex/delete/{id}", ctx -> {
             authMiddleware.handle(ctx);
             if (ctx.status().getCode() == 401) {
                 return;

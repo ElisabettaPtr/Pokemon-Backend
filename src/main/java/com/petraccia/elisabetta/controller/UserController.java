@@ -64,8 +64,19 @@ public class UserController {
         });
 
         // createUser --- "http://localhost:8000/api/v1/registration" ---
-        app.post(apiVersionV1 + "/registration",  ctx -> {
+        app.post(apiVersionV1 + "/registration", ctx -> {
             User user2create = ctx.bodyAsClass(User.class);
+
+            if (!userService.isEmailUnique(user2create.getEmail())) {
+                ctx.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse("Email already in use"));
+                return;
+            }
+
+            if (!userService.isUsernameUnique(user2create.getUsername())) {
+                ctx.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse("Username already in use"));
+                return;
+            }
+
             User createdUser = userService.createUser(user2create);
             createdUser.setPassword(null);
             ctx.status(HttpStatus.CREATED).json(createdUser);
@@ -82,9 +93,9 @@ public class UserController {
             boolean isDeleted = userService.deleteUserById(Integer.parseInt(userId));
 
             if (isDeleted) {
-                ctx.status(HttpStatus.OK).json("User eliminato con successo");
+                ctx.status(HttpStatus.OK).json("User deleted successfully");
             } else {
-                ctx.status(HttpStatus.NOT_FOUND).json("User non trovato");
+                ctx.status(HttpStatus.NOT_FOUND).json("User not found");
             }
         });
     }
@@ -95,6 +106,15 @@ public class UserController {
 
         public LoginResponse(String token) {
             this.token = token;
+        }
+    }
+
+    @Data
+    class ErrorResponse {
+        private String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
         }
     }
 

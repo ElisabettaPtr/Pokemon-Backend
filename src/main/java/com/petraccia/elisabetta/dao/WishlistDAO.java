@@ -1,6 +1,6 @@
 package com.petraccia.elisabetta.dao;
 
-import com.petraccia.elisabetta.model.Pokedex;
+import com.petraccia.elisabetta.model.Wishlist;
 import com.petraccia.elisabetta.utility.database.DatabaseConnection;
 
 import java.sql.Connection;
@@ -12,79 +12,78 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PokedexDAO {
+public class WishlistDAO {
     private Connection connection = DatabaseConnection.getInstance().getConnection();
 
-    public Pokedex addToPokedex(Pokedex pokedex) {
-        // Verifica se esiste già un record nella tabella Wishlist
-        String checkWishlistSql = "SELECT 1 FROM wishlist WHERE id_user = ? AND national_number = ?";
-        try (PreparedStatement checkPs = connection.prepareStatement(checkWishlistSql)) {
-            checkPs.setInt(1, pokedex.getIdUser());
-            checkPs.setInt(2, pokedex.getNationalNumber());
+    public Wishlist addToWishlist(Wishlist wishlist) {
+        // Verifica se esiste già un record nella tabella Pokedex
+        String checkPokedexSql = "SELECT 1 FROM pokedex WHERE id_user = ? AND national_number = ?";
+        try (PreparedStatement checkPs = connection.prepareStatement(checkPokedexSql)) {
+            checkPs.setInt(1, wishlist.getIdUser());
+            checkPs.setInt(2, wishlist.getNationalNumber());
 
             try (ResultSet checkRs = checkPs.executeQuery()) {
                 if (checkRs.next()) {
-                    throw new RuntimeException("This Pokémon is already in your Wishlist.");
+                    throw new RuntimeException("This Pokémon is already in your Pokedex.");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while checking Wishlist entries.", e);
+            throw new RuntimeException("Error while checking Pokedex entries.", e);
         }
 
         // Verifica se esiste già un record con lo stesso id_user e national_number
-        String checkSql = "SELECT 1 FROM pokedex WHERE id_user = ? AND national_number = ?";
+        String checkSql = "SELECT 1 FROM wishlist WHERE id_user = ? AND national_number = ?";
         try (PreparedStatement checkPs = connection.prepareStatement(checkSql)) {
-            checkPs.setInt(1, pokedex.getIdUser());
-            checkPs.setInt(2, pokedex.getNationalNumber());
+            checkPs.setInt(1, wishlist.getIdUser());
+            checkPs.setInt(2, wishlist.getNationalNumber());
 
             try (ResultSet checkRs = checkPs.executeQuery()) {
                 if (checkRs.next()) {
                     // Se il record esiste già, lanciamo un'eccezione per segnalare il conflitto
-                    throw new RuntimeException("Pokedex entry for user with this national number already exists.");
+                    throw new RuntimeException("Wishlist entry for user with this national number already exists.");
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while checking existing Pokedex entry.", e);
+            throw new RuntimeException("Error while checking existing Wishlist entry.", e);
         }
 
-        // Se il record non esiste, procediamo con l'inserimento
-        String sql = "INSERT INTO pokedex (id_user, national_number) VALUES (?, ?) RETURNING id_pokedex";
+        String sql = "INSERT INTO wishlist (id_user, national_number) VALUES (?, ?) RETURNING id_wishlist";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, pokedex.getIdUser());
-            ps.setInt(2, pokedex.getNationalNumber());
+            ps.setInt(1, wishlist.getIdUser());
+            ps.setInt(2, wishlist.getNationalNumber());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    pokedex.setIdPokedex(rs.getInt("id_pokedex"));
+                    wishlist.setIdWishlist(rs.getInt("id_wishlist"));
                 } else {
-                    throw new RuntimeException("Failed to add Pokedex entry, no rows affected.");
+                    throw new RuntimeException("Failed to add Wishlist entry, no rows affected.");
                 }
             }
 
-            return pokedex;
+            return wishlist;
         } catch (SQLException e) {
-            throw new RuntimeException("Error while adding Pokedex entry to the database.", e);
+            throw new RuntimeException("Error while adding Wishlist entry to the database.", e);
         }
     }
 
-    public List<Map<String, Object>> getPokedexWithDetailsByUserId(int userId) {
+    public List<Map<String, Object>> getWishlistWithDetailsByUserId(int userId) {
         String sql = """
         SELECT
-            p.id_pokedex,
-            p.national_number,
+            w.id_wishlist,
+            w.national_number,
             po.*
         FROM
-            pokedex p
+            wishlist w
         JOIN
             pokemon po
         ON
-            p.national_number = po.national_number
+            w.national_number = po.national_number
         WHERE
-            p.id_user = ?
+            w.id_user = ?
        """;
 
-        List<Map<String, Object>> pokedexList = new ArrayList<>();
+        List<Map<String, Object>> wishlistList = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -92,7 +91,7 @@ public class PokedexDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Map<String, Object> entry = new HashMap<>();
-                    entry.put("idPokedex", rs.getInt("id_pokedex"));
+                    entry.put("isWishlist", rs.getInt("id_wishlist"));
                     entry.put("nationalNumber", rs.getInt("national_number"));
 
                     Map<String, Object> pokemon = new HashMap<>();
@@ -125,28 +124,28 @@ public class PokedexDAO {
 
                     entry.put("pokemon", pokemon);
 
-                    pokedexList.add(entry);
+                    wishlistList.add(entry);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while fetching Pokedex entries for user with ID: " + userId, e);
+            throw new RuntimeException("Error while fetching Wishlist entries for user with ID: " + userId, e);
         }
 
-        return pokedexList;
+        return wishlistList;
     }
 
-    public void deleteFromPokedex(int idPokedex) {
-        String sql = "DELETE FROM pokedex WHERE id_pokedex = ?";
+    public void deleteFromWishlist(int idWishlist) {
+        String sql = "DELETE FROM wishlist WHERE id_wishlist = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, idPokedex);
+            ps.setInt(1, idWishlist);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected == 0) {
-                throw new RuntimeException("No Pokedex entry found with ID: " + idPokedex);
+                throw new RuntimeException("No Wishlist entry found with ID: " + idWishlist);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while deleting Pokedex entry with ID: " + idPokedex, e);
+            throw new RuntimeException("Error while deleting Wishlist entry with ID: " + idWishlist, e);
         }
     }
 }

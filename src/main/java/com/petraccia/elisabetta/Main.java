@@ -3,6 +3,7 @@ package com.petraccia.elisabetta;
 import com.petraccia.elisabetta.controller.PokedexController;
 import com.petraccia.elisabetta.controller.PokemonController;
 import com.petraccia.elisabetta.controller.UserController;
+import com.petraccia.elisabetta.controller.WishlistController;
 import io.javalin.Javalin;
 
 public class Main {
@@ -23,6 +24,9 @@ public class Main {
 
         PokedexController pokedexController = new PokedexController();
         pokedexController.registerRoutes(app);
+
+        WishlistController wishlistController = new WishlistController();
+        wishlistController.registerRoutes(app);
 
         System.out.println("Server is running on port 8000");
     }

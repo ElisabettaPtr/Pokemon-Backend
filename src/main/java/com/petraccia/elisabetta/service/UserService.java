@@ -57,4 +57,12 @@ public class UserService {
     public boolean deleteUserById(int id) {
          return userDAO.deleteUserById(id);
     }
+
+    public boolean isEmailUnique(String email) {
+        return userDAO.isEmailUnique(email);
+    }
+
+    public boolean isUsernameUnique(String username) {
+        return userDAO.isUsernameUnique(username);
+    }
 }

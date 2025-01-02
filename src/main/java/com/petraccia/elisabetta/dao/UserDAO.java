@@ -92,21 +92,22 @@ public class UserDAO {
     }
 
     public User createUser(User user) {
-        String createUserSQL = "INSERT INTO users (first_name, last_name, date_of_birth, username, email, password) " +
-                "VALUES (?, ?, ?, ?, ?, ?) RETURNING id_user";
+        String createUserSQL = "INSERT INTO users (first_name, last_name, date_of_birth, username, email, password, is_active, created_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id_user";
 
         try (PreparedStatement psCreateUser = connection.prepareStatement(createUserSQL)) {
-            // Non hashare la password, salva direttamente in chiaro
             psCreateUser.setString(1, user.getFirstName());
             psCreateUser.setString(2, user.getLastName());
             psCreateUser.setDate(3, java.sql.Date.valueOf(user.getDateOfBirth()));
             psCreateUser.setString(4, user.getUsername());
             psCreateUser.setString(5, user.getEmail());
-            psCreateUser.setString(6, user.getPassword()); // Salva la password in chiaro nel DB
+            psCreateUser.setString(6, user.getPassword());
+            psCreateUser.setBoolean(7, user.getIsActive());
+            psCreateUser.setTimestamp(8, java.sql.Timestamp.valueOf(user.getCreatedAt()));
 
             try (ResultSet rs = psCreateUser.executeQuery()) {
                 if (rs.next()) {
-                    user.setIdUser(rs.getInt("id_user")); // Imposta l'ID generato nell'oggetto User
+                    user.setIdUser(rs.getInt("id_user"));
                 } else {
                     throw new RuntimeException("User creation failed, no rows affected.");
                 }
@@ -129,6 +130,28 @@ public class UserDAO {
             return affectedRows > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Error while deleting user from the database.", e);
+        }
+    }
+
+    public boolean isEmailUnique(String email) {
+        String query = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) == 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error checking email uniqueness", e);
+        }
+    }
+
+    public boolean isUsernameUnique(String username) {
+        String query = "SELECT COUNT(*) FROM users WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) == 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error checking username uniqueness", e);
         }
     }
 }
