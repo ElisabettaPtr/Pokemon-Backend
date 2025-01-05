@@ -91,7 +91,7 @@ public class WishlistDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Map<String, Object> entry = new HashMap<>();
-                    entry.put("isWishlist", rs.getInt("id_wishlist"));
+                    entry.put("idWishlist", rs.getInt("id_wishlist"));
                     entry.put("nationalNumber", rs.getInt("national_number"));
 
                     Map<String, Object> pokemon = new HashMap<>();
