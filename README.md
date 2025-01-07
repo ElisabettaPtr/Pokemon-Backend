@@ -1,5 +1,14 @@
 POKEDEX MANAGER
 
+Framework: Javalin
+
+Libraries: Lombok, JSONWebToken
+
+Driver for PostreSQL
+
+Dotenv Java to load .env file
+
+
 This project requires a ".env" file, so after cloning the repository, create a new file in the project: .env
 
 Create an empty database with PostgreSQL
@@ -11,7 +20,6 @@ In .env, also define variable JWT_SECRET
 Execute code
 
 If any error occurs, consider realoding the project: Right-click on pom.xml>Maven>Reload project
-
 
 PROJECT STRUCTURE
 
@@ -28,9 +36,11 @@ Project uses MVC pattern:
   * DDL (Data Definition Language): "create_tables.sql" that contains table creation queries.
   * DML (Data Manipulation Language): "insert_data.sql" that contains data insert queries.
 
-
 DATABASE STRUCTURE
 
 ![modello_er_db.png](assets/modello_er_db.png)
 
 ![Screenshot20250107104047.png](assets/progettazionelogica.png)
+
+
+NICE TO HAVE: Update User, Password hashing

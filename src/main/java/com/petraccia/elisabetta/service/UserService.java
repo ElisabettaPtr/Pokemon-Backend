@@ -24,20 +24,19 @@ public class UserService {
         // Recupera l'utente dal DB per username
         User user = userDAO.getUserByUsername(username);
 
-        if (user == null || !password.equals(user.getPassword())) {  // Confronta direttamente le password in chiaro
+        if (user == null || !password.equals(user.getPassword())) {
             throw new RuntimeException("Invalid username or password");
         }
 
-        // Genera il token JWT
         SecretKey key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes());
 
         Instant expirationInstant = Instant.now().plusSeconds(86400); // Il token scade dopo 24 ore
 
-        // Genera il token JWT
+
         return Jwts.builder()
-                .setSubject(String.valueOf(user.getIdUser()))  // Usa setSubject() per il "subject"
-                .setExpiration(Date.from(expirationInstant)) // Imposta la scadenza del token
-                .signWith(key, SignatureAlgorithm.HS256) // Firma il token con HS256
+                .setSubject(String.valueOf(user.getIdUser()))
+                .setExpiration(Date.from(expirationInstant))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
