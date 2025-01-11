@@ -10,7 +10,7 @@ CREATE TABLE users (
     date_of_birth DATE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(70) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
+    password TEXT NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
